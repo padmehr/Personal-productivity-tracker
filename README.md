@@ -8,6 +8,8 @@ A personal productivity application built with Python to help track work session
 - Automatic switching between Work and Break sessions
 - Long break after every 4 completed work sessions
 - Countdown timer
+- Completed session counter
+- Current mode display (Work, Rest, Longrest)
 
 ## Technologies
 
