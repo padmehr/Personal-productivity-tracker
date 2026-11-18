@@ -21,6 +21,8 @@ class pomodor:
         self.current_mode = "work"
         self.title = title
         self.geometry = geometry
+        self.root.title(self.title)
+        self.root.geometry(self.geometry)
         self.completed_sessions = 3
         self.work_duration = 8 # 25 minutes in seconds
         self.rest_duration = 6   # 5 minutes in seconds
@@ -30,6 +32,8 @@ class pomodor:
         self.long_rest_seconds = self.long_rest_duration
         self.timer_label = tk.Label(self.root, text="Ready!",font=f)
         self.timer_label.pack(padx=20,pady=80)
+        self.current_mode_label = tk.Label(self.root, text="Work",font=f, bg="green", fg="white")
+        self.current_mode_label.pack()
         self.start_button = tk.Button(
                     self.root,
                     text="start",
@@ -38,10 +42,11 @@ class pomodor:
                     command= self.set_button,
                     )
         self.start_button.pack(
-                    padx=10,)
+                    padx=120,)
+        self.completed_sessions_label = tk.Label(self.root, text=f"Completed Sessions: {self.completed_sessions}",font=f)
+        self.completed_sessions_label.pack(pady=20)
         
-        self.root.title(self.title)
-        self.root.geometry(self.geometry)
+        
     
                 
         
@@ -71,9 +76,13 @@ class pomodor:
                 else:
                     self.work_seconds = self.work_duration
                     self.completed_sessions += 1
-                    print(f"Completed Sessions: {self.completed_sessions}")
+                    self.completed_sessions_label.config(text=f"Completed Sessions: {self.completed_sessions}")
                     self.timer_label.config(text="Break Time!")
                     self.current_mode = "rest"
+                    if self.completed_sessions % 4 == 0:
+                        self.current_mode_label.config(text="Long Rest")
+                    else:
+                        self.current_mode_label.config(text="Rest")
                     self.after_id = self.root.after(1000, self.update_timer)
             else:
                 if self.completed_sessions % 4 == 0:
@@ -85,6 +94,7 @@ class pomodor:
                         self.long_rest_seconds = self.long_rest_duration
                         self.timer_label.config(text="Work Time!")
                         self.current_mode = "work"
+                        self.current_mode_label.config(text="Work")
                         self.after_id = self.root.after(1000, self.update_timer)
                 else:
                     if self.rest_seconds > 0:
@@ -93,7 +103,6 @@ class pomodor:
                         self.after_id = self.root.after(1000, self.update_timer)
                     #When the rest timer reaches 0, switch to work mode
                     else:
-                        print("else is played")
                         self.rest_seconds = self.rest_duration
                         self.timer_label.config(text="Work Time!")
                         self.current_mode = "work"
@@ -114,5 +123,5 @@ class pomodor:
                 self.timer_label.config(text=f"{remaining_minutes:02d} : {remaining_seconds:02d}")
 
 ########   
-pomi = pomodor(root, "Pomodoro Timer", "400x400")
+pomi = pomodor(root, "Pomodoro Timer", "600x600")
 root.mainloop()
