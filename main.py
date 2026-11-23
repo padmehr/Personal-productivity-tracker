@@ -33,7 +33,7 @@ class pomodor:
         self.timer_label = tk.Label(self.root, text="Ready!",font=f)
         self.timer_label.pack(padx=20,pady=80)
         self.current_mode_label = tk.Label(self.root, text="Work",font=f, bg="green", fg="white")
-        self.current_mode_label.pack()
+        self.current_mode_label.pack(pady=15)
         self.start_button = tk.Button(
                     self.root,
                     text="start",
@@ -70,8 +70,6 @@ class pomodor:
             if self.current_mode == "work":
                 if self.work_seconds > 0:
                     self.work_seconds -= 1
-                    self.update_display()
-                    self.after_id = self.root.after(1000, self.update_timer)
                 #When the work timer reaches 0, switch to rest mode
                 else:
                     self.work_seconds = self.work_duration
@@ -83,35 +81,33 @@ class pomodor:
                         self.current_mode_label.config(text="Long Rest")
                     else:
                         self.current_mode_label.config(text="Rest")
-                    self.after_id = self.root.after(1000, self.update_timer)
             else:
                 if self.completed_sessions % 4 == 0:
                     if self.long_rest_seconds > 0:
                         self.long_rest_seconds -= 1
-                        self.update_display()
-                        self.after_id = self.root.after(1000, self.update_timer)
                     else:
                         self.long_rest_seconds = self.long_rest_duration
                         self.timer_label.config(text="Work Time!")
                         self.current_mode = "work"
                         self.current_mode_label.config(text="Work")
-                        self.after_id = self.root.after(1000, self.update_timer)
+                        
                 else:
                     if self.rest_seconds > 0:
                         self.rest_seconds -= 1
-                        self.update_display()
-                        self.after_id = self.root.after(1000, self.update_timer)
                     #When the rest timer reaches 0, switch to work mode
                     else:
                         self.rest_seconds = self.rest_duration
                         self.timer_label.config(text="Work Time!")
                         self.current_mode = "work"
-                        self.after_id = self.root.after(1000, self.update_timer)
+            self.update_display()
+            self.after_id = self.root.after(1000, self.update_timer)
+        
     def update_display(self):
         if self.current_mode == "work":
             remaining_seconds = self.work_seconds % 60
             remaining_minutes = self.work_seconds // 60
             self.timer_label.config(text=f"{remaining_minutes:02d} : {remaining_seconds:02d}")
+        #check if the current mode is rest or longrest and update the timer
         else:
             if self.completed_sessions % 4 == 0:
                 remaining_seconds = self.long_rest_seconds % 60
