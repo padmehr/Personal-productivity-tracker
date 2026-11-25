@@ -10,6 +10,7 @@ A personal productivity application built with Python to help track work session
 - Countdown timer
 - Completed session counter
 - Current mode display (Work, Rest, Longrest)
+- Timer Configuration menu
 
 ## Technologies
 
